@@ -6,26 +6,40 @@ import Weather from './components/WeatherComponent';
 
 
 class App extends Component {
+
   constructor(props) {
     super(props);
+    this.state = {
+      searchText: props.initialCity,
+      data: null
+    };
+    this.getWeather();
   }
 
-  getWeather = async (name) => {
-  var url_request = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%0Awoeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%27$%7B" + name + "%7D%27)%20and%0Au%3D%27c%27&format=json"
-  console.log(url_request);
-  const api_call = await fetch(url_request);
-  const response = await api_call.json();
+  updateSearchText(searchText) {
+   this.setState({
+     searchText
+   });
+ }
 
-  console.log(response);
-}
-
-  render() {
-    return (
-      <div>
-        <Header />
-        <FormComponent loadWeather={this.getWeather}  />
-        <Weather />
-      </div>
+  getWeather (){
+    const searchText = this.state.searchText;
+    const url = `https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${searchText}")and u='c'&format=json`;
+    console.log(url);
+    fetch(url)
+          .then(response => response.json())
+          .then(responseJson => this.setState({data: responseJson.query.results.channel}))
+          .catch(error => console.error(error));
+        }
+        render() {
+          return (
+            <div>
+              <Header />
+              <FormComponent searchText={this.state.searchText}
+                            updateSearchText={this.updateSearchText.bind(this)}
+                            getWeather={this.getWeather.bind(this)} />
+              <Weather data={this.state.data}/>
+            </div>
     );
   }
 }

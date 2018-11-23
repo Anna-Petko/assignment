@@ -2,7 +2,7 @@ To run the app locally:
 
 I. git clone repository
 
-II. install all dependncies:
+II. install all dependencies:
 
 1. npm install
 2. npm install --save react-router-dom

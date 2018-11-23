@@ -1,3 +1,12 @@
+To run the app locally:
+
+I. git clone repository
+II. install all dependncies:
+    1. npm install
+    2. npm install --save react-router-dom
+    3. npm install query-string
+III. npm start 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
